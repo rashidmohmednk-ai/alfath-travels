@@ -39,7 +39,7 @@ Each day of the itinerary is `["Title EN", "Text EN", "Title AR", "Text AR"]`.
 
 **Interface text.** All buttons, headings and labels are in `i18n.js`, English block first, Arabic block second.
 
-**Google reviews.** The site only shows a "Write a Google review" button, because no real reviews were supplied. Do **not** invent reviews. Replace `reviewUrl` in `data.js` with the "Ask for reviews" link from your Google Business Profile.
+**Google reviews.** In `data.js`, fill `window.REVIEWS`: the overall `rating` and review `count` from the Google profile, and each review as `{ name, stars, date, text }`, copied word for word from Google. The slider appears as soon as there is at least one review and is hidden while the list is empty. Never invent or edit reviews. Set `reviewUrl` in `SITE` to the "Ask for reviews" link from your Google Business Profile.
 
 ## Enquiry forms (FormSubmit)
 

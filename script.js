@@ -116,6 +116,7 @@
     $$(".js-maps").forEach((a) => (a.href = S.mapsUrl));
     $$(".js-ig").forEach((a) => (a.href = S.instagram));
     $$(".js-review").forEach((a) => (a.href = S.reviewUrl));
+    $$(".js-maps-reviews").forEach((a) => (a.href = S.reviewsListUrl || S.mapsUrl));
     $$(".js-wa").forEach((a) => (a.href = waLink(a.dataset.waCtx === "flights" ? { type: "flights" } : null)));
     $$(".js-wa-med").forEach((a) => (a.href = waLink({ type: "med" })));
     const mf = $("#mapFrame"); if (mf && !mf.src) mf.src = S.mapsEmbed;
@@ -360,6 +361,46 @@
       </div>`).join("");
   }
 
+  /* ---------- Google reviews slider ---------- */
+  let revIdx = 0, revTimer = null;
+  const G_ICON = '<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2A11.9 11.9 0 0 1 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3a12 12 0 0 1-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>';
+  const stars = (n) => Array.from({ length: 5 }, (_, i) => `<svg class="icon${i < Math.round(n) ? "" : " off"}" aria-hidden="true"><use href="#i-star"/></svg>`).join("");
+  const initials = (n) => String(n).trim().split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+  function revPerView() { return window.innerWidth <= 760 ? 1 : window.innerWidth <= 1080 ? 2 : 3; }
+  function buildReviews() {
+    const R = window.REVIEWS, wrap = $("#revWrap"), cta = $(".review-cta");
+    if (!R || !R.items || !R.items.length) { wrap.hidden = true; return; }
+    wrap.hidden = false;
+    if (cta) cta.style.display = "none";
+    $("#gSummary").innerHTML = `${G_ICON}<div><div class="g-score"><b>${esc(R.rating != null ? Number(R.rating).toFixed(1) : "")}</b><span class="stars">${stars(R.rating || 5)}</span></div><small>${R.count != null ? esc(R.count) + " " + esc(t("rev.based")) : "Google"}</small></div>`;
+    $("#revTrack").innerHTML = R.items.map((r, i) => `
+      <figure class="rev-card" role="group" aria-roledescription="slide" aria-label="${i + 1} / ${R.items.length}">
+        <div class="rev-top"><span class="rev-av" aria-hidden="true">${esc(initials(r.name))}</span><div><figcaption><b>${esc(r.name)}</b></figcaption><small>${esc(r.date || "")}</small></div><span class="rev-g">${G_ICON}</span></div>
+        <div class="stars" role="img" aria-label="${esc(r.stars)} / 5">${stars(r.stars)}</div>
+        <blockquote dir="auto">${esc(r.text)}</blockquote>
+      </figure>`).join("");
+    revIdx = Math.min(revIdx, Math.max(0, R.items.length - revPerView()));
+    renderRev();
+    revRestart();
+  }
+  function renderRev() {
+    const R = window.REVIEWS; if (!R || !R.items.length) return;
+    const pages = Math.max(1, R.items.length - revPerView() + 1);
+    revIdx = (revIdx + pages) % pages;
+    const card = $(".rev-card"); if (!card) return;
+    const step = card.getBoundingClientRect().width + 24;
+    $("#revTrack").style.transform = `translateX(${(lang === "ar" ? 1 : -1) * revIdx * step}px)`;
+    $("#revDots").innerHTML = Array.from({ length: pages }, (_, i) => `<button type="button" aria-label="${i + 1}"${i === revIdx ? ' class="active" aria-current="true"' : ""}></button>`).join("");
+    const hide = pages < 2; ["#revPrev", "#revNext", "#revDots"].forEach((q) => ($(q).style.visibility = hide ? "hidden" : ""));
+  }
+  function revRestart() { clearInterval(revTimer); if (!reduceMotion) revTimer = setInterval(() => { revIdx++; renderRev(); }, 5500); }
+  $("#revPrev").addEventListener("click", () => { revIdx--; renderRev(); revRestart(); });
+  $("#revNext").addEventListener("click", () => { revIdx++; renderRev(); revRestart(); });
+  $("#revDots").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; revIdx = [...b.parentNode.children].indexOf(b); renderRev(); revRestart(); });
+  $("#revSlider").addEventListener("mouseenter", () => clearInterval(revTimer));
+  $("#revSlider").addEventListener("mouseleave", revRestart);
+  window.addEventListener("resize", () => renderRev());
+
   /* ---------- Instagram + footer ---------- */
   function buildIg() {
     $("#igRow").innerHTML = window.INSTAGRAM.map((k) => `<a class="ig-tile" href="${esc(S.instagram)}" target="_blank" rel="noopener" aria-label="Instagram ${esc(S.instagramHandle)}"><img src="${img(k, 400, 400)}" alt="" loading="lazy" width="400" height="400">${icon("ig")}</a>`).join("");
@@ -553,6 +594,7 @@
     buildTabs();
     buildPackages();
     buildFaq();
+    buildReviews();
     buildIg();
     $("#heroCap").textContent = L(window.HERO[slideIdx].cap);
     $$(".hero-slide img").forEach((im, i) => (im.alt = L(window.HERO[i].cap)));

@@ -847,6 +847,21 @@ window.PACKAGES = [
 ];
 
 /* --------------------------------------------------------------------------
+   GOOGLE REVIEWS — only real reviews, copied word for word from the
+   business's Google profile. The slider stays hidden while "items" is empty.
+   rating / count: the numbers shown on the Google profile (e.g. 4.9 and 37).
+   Each review: { name, stars (1-5), date, text }   (text in its original language)
+   Example:
+   { name: "Ahmed Al Balushi", stars: 5, date: "October 2026", text: "Excellent service ..." },
+   -------------------------------------------------------------------------- */
+window.REVIEWS = {
+  rating: null,
+  count: null,
+  items: [
+  ]
+};
+
+/* --------------------------------------------------------------------------
    FAQ ["Question EN", "Answer EN", "Question AR", "Answer AR"]
    -------------------------------------------------------------------------- */
 window.FAQ = [

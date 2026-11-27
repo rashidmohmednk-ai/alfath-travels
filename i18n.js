@@ -134,6 +134,10 @@ window.I18N = {
     "rev.title": "Travelled with us?",
     "rev.lead": "Your review on Google helps other families in Oman choose with confidence. It only takes a minute.",
     "rev.write": "Write a Google review",
+    "rev.eyebrow2": "What our travellers say",
+    "rev.title2": "Google reviews",
+    "rev.readAll": "Read all on Google",
+    "rev.based": "reviews on Google",
 
     /* FAQ */
     "faq.eyebrow": "Questions",
@@ -371,6 +375,10 @@ window.I18N = {
     "rev.title": "سافرتم معنا؟",
     "rev.lead": "تقييمكم على Google يساعد العائلات في عُمان على الاختيار بثقة. لا يستغرق الأمر سوى دقيقة.",
     "rev.write": "اكتب تقييماً على Google",
+    "rev.eyebrow2": "ماذا يقول مسافرونا",
+    "rev.title2": "تقييمات Google",
+    "rev.readAll": "اقرأ جميع التقييمات على Google",
+    "rev.based": "تقييماً على Google",
 
     "faq.eyebrow": "أسئلة",
     "faq.title": "الأسئلة الشائعة",
