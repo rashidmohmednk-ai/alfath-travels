@@ -24,10 +24,10 @@ window.SITE = {
   tiktok: "",
   snapchat: "",
   address: ["Al Hosn Street, Quriyat, Muscat, Sultanate of Oman", "شارع الحصن، قريات، مسقط، سلطنة عُمان"],
-  mapsUrl: "https://www.google.com/maps/search/?api=1&query=Al+Fath+Travel+%26+Tourism+Quriyat+Oman",
-  mapsEmbed: "https://www.google.com/maps?q=Al+Hosn+Street,+Quriyat,+Oman&z=15&output=embed",
+  mapsUrl: "https://www.google.com/maps/search/?api=1&query=23.2505,58.9065",   // "Get directions" link. TODO: replace with the office's own Google Maps share link
+  mapsEmbed: "https://maps.google.com/maps?q=23.2505,58.9065&hl=en&z=15&output=embed", // map on the Contact section (pin on Al Husn Street, Quriyat)
   reviewUrl: "https://www.google.com/maps/search/?api=1&query=Al+Fath+Travel+%26+Tourism+Quriyat+Oman", // TODO: replace with the "Ask for reviews" link from Google Business Profile
-  geo: { lat: 23.2622, lng: 58.9178 }, // approximate (Quriyat). TODO: confirm exact office pin
+  geo: { lat: 23.2505, lng: 58.9065 }, // Al Husn Street, Quriyat (OpenStreetMap). TODO: confirm exact office pin
   founded: null,                     // e.g. 2019 — shows "Since 2019" in About when filled
   hours: null,                       // e.g. ["Sat–Thu: 9:00 am – 1:00 pm, 4:00 pm – 9:00 pm", "السبت–الخميس: ..."]
   officePhoto: ""                    // e.g. "assets/img/office.jpg" — leave empty to show the logo card
