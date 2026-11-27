@@ -24,10 +24,11 @@ window.SITE = {
   tiktok: "",
   snapchat: "",
   address: ["Al Hosn Street, Quriyat, Muscat, Sultanate of Oman", "شارع الحصن، قريات، مسقط، سلطنة عُمان"],
-  mapsUrl: "https://www.google.com/maps/search/?api=1&query=23.2505,58.9065",   // "Get directions" link. TODO: replace with the office's own Google Maps share link
-  mapsEmbed: "https://maps.google.com/maps?q=23.2505,58.9065&hl=en&z=15&output=embed", // map on the Contact section (pin on Al Husn Street, Quriyat)
-  reviewUrl: "https://www.google.com/maps/search/?api=1&query=Al+Fath+Travel+%26+Tourism+Quriyat+Oman", // TODO: replace with the "Ask for reviews" link from Google Business Profile
-  geo: { lat: 23.2505, lng: 58.9065 }, // Al Husn Street, Quriyat (OpenStreetMap). TODO: confirm exact office pin
+  mapsUrl: "https://www.google.com/maps/place/Al+Fath+Travel+%26+Tourism/@23.2649914,58.9163929,17z/data=!4m8!3m7!1s0x3e91bb1979453927:0x9acac3a5d3aaf372!8m2!3d23.2649914!4d58.9163929!9m1!1b1!16s%2Fg%2F11stjv13gz",   // Google Maps listing (Get directions)
+  mapsEmbed: "https://maps.google.com/maps?q=Al+Fath+Travel+%26+Tourism@23.2649914,58.9163929&hl=en&z=17&output=embed", // map on the Contact section
+  reviewUrl: "https://www.google.com/maps/place/Al+Fath+Travel+%26+Tourism/@23.2649914,58.9163929,17z/data=!4m8!3m7!1s0x3e91bb1979453927:0x9acac3a5d3aaf372!8m2!3d23.2649914!4d58.9163929!9m1!1b1!16s%2Fg%2F11stjv13gz", // TODO: replace with the "Ask for reviews" link from Google Business Profile (opens the review form directly)
+  reviewsListUrl: "https://www.google.com/maps/place/Al+Fath+Travel+%26+Tourism/@23.2649914,58.9163929,17z/data=!4m8!3m7!1s0x3e91bb1979453927:0x9acac3a5d3aaf372!8m2!3d23.2649914!4d58.9163929!9m1!1b1!16s%2Fg%2F11stjv13gz",
+  geo: { lat: 23.2649914, lng: 58.9163929 }, // from the Google Maps listing
   founded: null,                     // e.g. 2019 — shows "Since 2019" in About when filled
   hours: null,                       // e.g. ["Sat–Thu: 9:00 am – 1:00 pm, 4:00 pm – 9:00 pm", "السبت–الخميس: ..."]
   officePhoto: ""                    // e.g. "assets/img/office.jpg" — leave empty to show the logo card
@@ -855,9 +856,15 @@ window.PACKAGES = [
    { name: "Ahmed Al Balushi", stars: 5, date: "October 2026", text: "Excellent service ..." },
    -------------------------------------------------------------------------- */
 window.REVIEWS = {
-  rating: null,
-  count: null,
+  rating: 5.0,
+  count: 10,
+  // Copied word for word from Google Maps (checked 27 Nov 2026). Dates as Google shows them.
   items: [
+    { name: "Mohammed Shahzad", stars: 5, date: "3 years ago", text: "Best service and good maintained office with best prize have ever got." },
+    { name: "Fathima Noor", stars: 5, date: "3 years ago", text: "Highly recommended for travel arrangements and visa services." },
+    { name: "cp mt", stars: 5, date: "2 years ago", text: "Very helpful staff and trustworthy" },
+    { name: "Ali Oman", stars: 5, date: "3 years ago", text: "Best travel agency in Oman.." },
+    { name: "shajahan kp", stars: 5, date: "3 years ago", text: "Highly Recommended" }
   ]
 };
 
