@@ -12,6 +12,7 @@ Plain HTML, CSS and JavaScript. No build step, so it can be hosted free on GitHu
 | `script.js` | Language switch, slideshow, pop-ups, forms, WhatsApp links |
 | `data.js` | **Business content:** contact details, packages, services, medical programmes, FAQ, photos |
 | `i18n.js` | **All interface text** in English and Arabic |
+| `countries.js` | Country dialling codes for the phone fields (`DEFAULT` = pre-selected country, `TOP` = countries listed first) |
 | `assets/img/` | Logo (colour and white), icons, share image (`og-image.jpg`) |
 | `robots.txt`, `sitemap.xml`, `site.webmanifest`, `CNAME`, `404.html`, `favicon.ico` | Hosting and SEO files |
 

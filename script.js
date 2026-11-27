@@ -26,6 +26,25 @@
   const srcset = (key, ws, ratio) => ws.map((w) => `${img(key, w, ratio ? Math.round(w * ratio) : 0)} ${w}w`).join(", ");
   const siteName = () => (lang === "ar" ? S.nameAr : S.name);
 
+  /* ---------- Country codes (phone fields) ---------- */
+  const CC = window.COUNTRY_CODES;
+  const flag = (iso) => iso.replace(/./g, (c) => String.fromCodePoint(127397 + c.charCodeAt(0)));
+  function fillCC(sel) {
+    if (!sel || !CC) return;
+    let names; try { names = new Intl.DisplayNames([lang], { type: "region" }); } catch (e) { names = null; }
+    const nm = (iso) => { try { return (names && names.of(iso)) || iso; } catch (e) { return iso; } };
+    const opt = ([iso, code]) => `<option value="${iso}" data-code="+${code}">${flag(iso)} ${esc(nm(iso))} (+${code})</option>`;
+    const byIso = Object.fromEntries(CC.LIST.map((r) => [r[0], r]));
+    const top = CC.TOP.filter((i) => byIso[i]).map((i) => byIso[i]);
+    const all = CC.LIST.slice().sort((a, b) => nm(a[0]).localeCompare(nm(b[0]), lang));
+    const cur = sel.value || CC.DEFAULT;
+    sel.innerHTML = `<optgroup label="${esc(t("f.ccTop"))}">${top.map(opt).join("")}</optgroup><optgroup label="${esc(t("f.ccAll"))}">${all.map(opt).join("")}</optgroup>`;
+    sel.value = cur;
+    const upd = () => { const o = sel.selectedOptions[0]; sel.previousElementSibling.textContent = o ? flag(sel.value) + " " + o.dataset.code : ""; };
+    if (!sel.dataset.bound) { sel.addEventListener("change", upd); sel.dataset.bound = "1"; }
+    upd();
+  }
+
   /* ---------- WhatsApp ---------- */
   function waLink(ctx) {
     let msg;
@@ -79,6 +98,8 @@
     const svcSel = $("#f-service"), cur = svcSel.value;
     svcSel.innerHTML = `<option value="">${esc(t("f.selectService"))}</option>` + window.SERVICES.map((s) => `<option value="${s.id}">${esc(L(s.title))}</option>`).join("");
     svcSel.value = cur;
+
+    $$(".js-cc").forEach(fillCC);
 
     // destinations datalist
     const dests = new Set();
@@ -253,7 +274,7 @@
           <div class="form-grid">
             <div class="field"><label for="m-name">${esc(t("med.patient"))} *</label><input id="m-name" name="patient_name" required></div>
             <div class="field"><label for="m-age">${esc(t("med.age"))}</label><input id="m-age" name="patient_age" type="number" min="0" max="120" inputmode="numeric"></div>
-            <div class="field"><label for="m-phone">${esc(t("f.phone"))} *</label><input id="m-phone" name="phone" type="tel" required dir="ltr" placeholder="+968" autocomplete="tel"></div>
+            <div class="field"><label for="m-phone">${esc(t("f.phone"))} *</label><div class="phone-field" dir="ltr"><span class="cc-wrap"><span class="cc-label" aria-hidden="true"></span><select name="country_code" class="js-cc" aria-label="${esc(t("f.cc"))}"></select></span><input id="m-phone" name="phone" type="tel" required autocomplete="tel-national" inputmode="tel" placeholder="${esc(t("f.phonePh"))}"></div></div>
             <div class="field"><label for="m-email">${esc(t("f.email"))}</label><input id="m-email" name="email" type="email" dir="ltr" autocomplete="email"></div>
             <div class="field full"><label for="m-cond">${esc(t("med.condition"))} *</label><textarea id="m-cond" name="condition" required style="min-height:90px"></textarea></div>
             <div class="field"><label for="m-city">${esc(t("med.city"))}</label><select id="m-city" name="preferred_city"><option value="">${esc(t("med.cityAny"))}</option>${cities.map((c) => `<option value="${esc(c[0])}">${esc(L(c))}</option>`).join("")}</select></div>
@@ -268,6 +289,7 @@
         </form>
       </div>`, true);
     const f = $("#medForm");
+    fillCC($(".js-cc", f));
     f.addEventListener("submit", (e) => submitForm(e, f, "medical"));
   }
 
@@ -402,6 +424,12 @@
     $$("[aria-invalid]", form).forEach((el) => el.removeAttribute("aria-invalid"));
 
     const data = new FormData(form);
+    const ccSel = $(".js-cc", form);
+    if (ccSel) {
+      const o = ccSel.selectedOptions[0], num = String(data.get("phone") || "").trim();
+      data.set("phone", num.startsWith("+") ? num : `${o ? o.dataset.code : ""} ${num.replace(/^0+/, "")}`.trim());
+      data.delete("country_code");
+    }
     const who = data.get("name") || data.get("patient_name") || "";
     let label;
     if (kind === "medical") label = "Medical tourism" + (data.get("programme") ? " – " + data.get("programme") : "");
@@ -437,7 +465,7 @@
       const json = await res.json().catch(() => ({}));
       if (!res.ok || String(json.success) === "false") throw new Error(json.message || "Failed");
       msg.className = "form-msg ok"; msg.textContent = t("f.ok");
-      form.reset(); applyText();
+      form.reset(); $$(".js-cc", form).forEach((x) => (x.value = CC.DEFAULT)); applyText();
     } catch (err) {
       const body = Array.from(data.entries()).filter(([k]) => !k.startsWith("_")).map(([k, v]) => `${k}: ${v}`).join("\n");
       msg.className = "form-msg err";

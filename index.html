@@ -459,7 +459,7 @@
             <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
             <div class="form-grid">
               <div class="field"><label for="f-name"><span data-i18n="f.name">Full name</span> *</label><input id="f-name" name="name" required autocomplete="name"></div>
-              <div class="field"><label for="f-phone"><span data-i18n="f.phone">Phone / WhatsApp</span> *</label><input id="f-phone" name="phone" type="tel" required autocomplete="tel" dir="ltr" placeholder="+968"></div>
+              <div class="field"><label for="f-phone"><span data-i18n="f.phone">Phone / WhatsApp</span> *</label><div class="phone-field" dir="ltr"><span class="cc-wrap"><span class="cc-label" aria-hidden="true"></span><select name="country_code" class="js-cc" data-i18n-aria="f.cc" aria-label="Country code"></select></span><input id="f-phone" name="phone" type="tel" required autocomplete="tel-national" inputmode="tel" data-i18n-ph="f.phonePh" placeholder="Mobile number"></div></div>
               <div class="field"><label for="f-email" data-i18n="f.email">Email (optional)</label><input id="f-email" name="email" type="email" autocomplete="email" dir="ltr"></div>
               <div class="field"><label for="f-service" data-i18n="f.service">Service</label><select id="f-service" name="service"></select></div>
               <div class="field"><label for="f-package" data-i18n="f.package">Package / destination</label><input id="f-package" name="package" data-i18n-ph="f.packagePh" placeholder="e.g. Georgia, Kerala, Maldives"></div>
@@ -557,6 +557,7 @@
 
 <script src="i18n.js"></script>
 <script src="data.js"></script>
+<script src="countries.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
